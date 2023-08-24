@@ -19,6 +19,11 @@ class ComplaintAdmin(admin.ModelAdmin):
 
 class OwnerAdmin(admin.ModelAdmin):
     raw_id_fields = ('owned_flats',)
+    list_display = ('full_name', 'pure_phone', 'get_owned_flats')
+
+    def get_owned_flats(self, owner):
+        return [flat.address for flat in owner.owned_flats.all()]
+    get_owned_flats.short_description = 'Квартиры в собственности'
 
 
 admin.site.register(Flat, FlatAdmin)
