@@ -1,8 +1,10 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.contrib.admin import AdminSite
 
 from phonenumber_field.modelfields import PhoneNumberField
+
 
 
 class Flat(models.Model):
@@ -56,6 +58,10 @@ class Flat(models.Model):
     liked_by = models.ManyToManyField(User, related_name='liked_flats',
                                       verbose_name='Кто лайкнул', blank=True)
 
+    class Meta:
+        verbose_name = 'Квартира'
+        verbose_name_plural = 'Квартиры'
+
     def __str__(self):
         return f'{self.town}, {self.address} ({self.price}р.)'
 
@@ -68,6 +74,10 @@ class Complaint(models.Model):
                              verbose_name='Квартира, на которую пожаловались',
                              related_name='complaints')
     text = models.TextField(max_length=500, verbose_name='Текст жалобы')
+
+    class Meta:
+        verbose_name = 'Жалоба'
+        verbose_name_plural = 'Жалобы'
 
     def __str__(self):
         return f'{self.user} жалуется на {self.flat}'
@@ -83,6 +93,10 @@ class Owner(models.Model):
     owned_flats = models.ManyToManyField(
         Flat, related_name='owners', blank=True,
         verbose_name='Квартиры в собственности')
+
+    class Meta:
+        verbose_name = 'Собственник'
+        verbose_name_plural = 'Собственники'
 
     def __str__(self):
         return f'{self.full_name}'

@@ -2,6 +2,9 @@ from django.contrib import admin
 
 from .models import Flat, Complaint, Owner
 
+admin.site.site_header = 'Агентство недвижимости'
+admin.site.site_title = 'Агентство недвижимости'
+
 
 class OwnerInline(admin.TabularInline):
     model = Owner.owned_flats.through
