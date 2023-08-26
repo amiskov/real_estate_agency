@@ -16,6 +16,7 @@ class OwnerInline(admin.TabularInline):
     model.__str__ = lambda _: 'Идентификатор собственника'
 
 
+@admin.register(Flat)
 class FlatAdmin(admin.ModelAdmin):
     search_fields = ('town', 'town_district', 'address', 'owners__full_name')
     readonly_fields = ('created_at',)
@@ -39,10 +40,12 @@ class FlatAdmin(admin.ModelAdmin):
         return ", ".join(pure_phones)
 
 
+@admin.register(Complaint)
 class ComplaintAdmin(admin.ModelAdmin):
     raw_id_fields = ('flat',)
 
 
+@admin.register(Owner)
 class OwnerAdmin(admin.ModelAdmin):
     raw_id_fields = ('flats',)
     list_display = ('full_name', 'pure_phone', 'get_flats')
@@ -50,8 +53,3 @@ class OwnerAdmin(admin.ModelAdmin):
     def get_flats(self, owner):
         return [flat.address for flat in owner.flats.all()]
     get_flats.short_description = 'Квартиры в собственности'
-
-
-admin.site.register(Flat, FlatAdmin)
-admin.site.register(Complaint, ComplaintAdmin)
-admin.site.register(Owner, OwnerAdmin)
