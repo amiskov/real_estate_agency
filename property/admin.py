@@ -17,17 +17,26 @@ class OwnerInline(admin.TabularInline):
 
 
 class FlatAdmin(admin.ModelAdmin):
-    search_fields = ('town', 'town_district', 'address', 'owner')
+    search_fields = ('town', 'town_district', 'address', 'owners__full_name')
     readonly_fields = ('created_at',)
     raw_id_fields = ('liked_by',)
 
-    list_display = ('address', 'price', 'new_building', 'owners_phonenumber',
-                    'owner_pure_phone', 'construction_year', 'town')
+    list_display = ('address', 'price', 'new_building',
+                    'get_owners_phonenumbers', 'get_owners_pure_phones',
+                    'construction_year', 'town')
     list_editable = ('new_building',)
     list_filter = ('new_building', 'rooms_number', 'has_balcony')
 
     inlines = [OwnerInline]
     exclude = ["owners"]
+
+    def get_owners_phonenumbers(self, flat):
+        phonenumbers = [str(owner.phonenumber) for owner in flat.owners.all()]
+        return ", ".join(phonenumbers)
+
+    def get_owners_pure_phones(self, flat):
+        pure_phones = [str(owner.pure_phone) for owner in flat.owners.all()]
+        return ", ".join(pure_phones)
 
 
 class ComplaintAdmin(admin.ModelAdmin):
