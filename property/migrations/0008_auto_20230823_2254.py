@@ -7,7 +7,7 @@ from django.db import migrations
 
 def purify_phone_number(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
-    for flat in Flat.objects.all():
+    for flat in Flat.objects.all().iterator():
         parsed_phone = phonenumbers.parse(flat.owners_phonenumber, 'RU')
         if phonenumbers.is_valid_number(parsed_phone):
             flat.owner_pure_phone = parsed_phone
@@ -18,9 +18,7 @@ def purify_phone_number(apps, schema_editor):
 
 def reset_pure_phone_number_field(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
-    for flat in Flat.objects.all():
-        flat.owner_pure_phone = None
-        flat.save()
+    Flat.objects.update(owner_pure_phone=None)
 
 
 class Migration(migrations.Migration):
