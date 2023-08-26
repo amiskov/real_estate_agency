@@ -7,7 +7,7 @@ admin.site.site_title = 'Агентство недвижимости'
 
 
 class OwnerInline(admin.TabularInline):
-    model = Owner.owned_flats.through
+    model = Owner.flats.through
     raw_id_fields = ('owner',)
     extra = 0
     verbose_name = 'Собственник'
@@ -44,12 +44,12 @@ class ComplaintAdmin(admin.ModelAdmin):
 
 
 class OwnerAdmin(admin.ModelAdmin):
-    raw_id_fields = ('owned_flats',)
-    list_display = ('full_name', 'pure_phone', 'get_owned_flats')
+    raw_id_fields = ('flats',)
+    list_display = ('full_name', 'pure_phone', 'get_flats')
 
-    def get_owned_flats(self, owner):
-        return [flat.address for flat in owner.owned_flats.all()]
-    get_owned_flats.short_description = 'Квартиры в собственности'
+    def get_flats(self, owner):
+        return [flat.address for flat in owner.flats.all()]
+    get_flats.short_description = 'Квартиры в собственности'
 
 
 admin.site.register(Flat, FlatAdmin)
