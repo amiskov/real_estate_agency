@@ -102,5 +102,3 @@ DATABASES = {
         os.getenv('DATABASE', 'sqlite:///db.sqlite3')
     ),
 }
-
-ADMIN_SITE_HEADER = "My shiny new administration"
